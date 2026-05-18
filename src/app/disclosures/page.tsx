@@ -12,7 +12,8 @@ export const metadata = {
 interface HygraphDisclosure {
   id: string;
   title: string;
-  pdfFile: {
+  driveLink?: string;
+  pdfFile?: {
     url: string;
   };
 }
@@ -49,24 +50,28 @@ export default async function DisclosuresPage() {
           <div className={styles.categoryBlock}>
             <h2 className={styles.categoryTitle}>CBSE Mandated Documents</h2>
             <div className={styles.grid}>
-              {liveDisclosures.map((doc) => (
-                <a 
-                  href={doc.pdfFile.url} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  key={doc.id} 
-                  className={styles.docCard}
-                >
-                  <div className={styles.iconWrapper}>
-                    <FileText size={24} />
-                  </div>
-                  <div className={styles.docInfo}>
-                    <h3 className={styles.docName}>{doc.title}</h3>
-                    <span className={styles.docSize}>PDF Document • Live from CMS</span>
-                  </div>
-                  <Download size={20} className={styles.downloadIcon} />
-                </a>
-              ))}
+              {liveDisclosures.map((doc) => {
+                const docUrl = doc.driveLink || doc.pdfFile?.url || "#";
+                const docLabel = doc.driveLink ? "Google Drive Link" : "PDF Document";
+                return (
+                  <a 
+                    href={docUrl} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    key={doc.id} 
+                    className={styles.docCard}
+                  >
+                    <div className={styles.iconWrapper}>
+                      <FileText size={24} />
+                    </div>
+                    <div className={styles.docInfo}>
+                      <h3 className={styles.docName}>{doc.title}</h3>
+                      <span className={styles.docSize}>{docLabel} • Live from CMS</span>
+                    </div>
+                    <Download size={20} className={styles.downloadIcon} />
+                  </a>
+                );
+              })}
             </div>
           </div>
         ) : (

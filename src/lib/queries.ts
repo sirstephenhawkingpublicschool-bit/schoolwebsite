@@ -64,12 +64,12 @@ export const GET_SCHOOL_MESSAGES = `
   }
 `;
 
-// 4. QUERY FOR DISCLOSURES / PUBLIC PDFS
 export const GET_DISCLOSURES = `
   query GetDisclosures {
     disclosures(orderBy: title_ASC) {
       id
       title
+      driveLink
       pdfFile {
         url
       }

@@ -41,7 +41,7 @@ export default async function FeeStructurePage() {
         query: GET_FEE_STRUCTURE,
         revalidate: 0,
       }),
-      hygraphFetch<{ disclosures: Array<{ title: string; pdfFile: { url: string } }> }>({
+      hygraphFetch<{ disclosures: Array<{ title: string; driveLink?: string; pdfFile?: { url: string } }> }>({
         query: GET_DISCLOSURES,
         revalidate: 0,
       }).catch((e) => {
@@ -63,8 +63,8 @@ export default async function FeeStructurePage() {
       const booklistDoc = disclosureRes.disclosures.find(
         (doc) => doc.title.toLowerCase().includes("booklist")
       );
-      if (booklistDoc && booklistDoc.pdfFile) {
-        booklistUrl = booklistDoc.pdfFile.url;
+      if (booklistDoc) {
+        booklistUrl = booklistDoc.driveLink || booklistDoc.pdfFile?.url || "#";
       }
     }
   } catch (error) {
