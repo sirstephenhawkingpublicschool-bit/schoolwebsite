@@ -43,13 +43,16 @@ export default async function DisclosuresPage() {
 
   if (useLive) {
     liveDisclosures.forEach((doc) => {
-      let cat = doc.category || "A. General Information";
+      let rawCat = doc.category || "";
+      let cat = "A. General Information";
       
-      // Auto-correct spelling/shorthands
-      if (cat.toLowerCase().includes("general")) cat = "A. General Information";
-      else if (cat.toLowerCase().includes("documents")) cat = "B. Documents and Information";
-      else if (cat.toLowerCase().includes("result") || cat.toLowerCase().includes("academic")) cat = "C. Result and Academics";
-      else cat = "A. General Information";
+      if (rawCat === "GENERAL_INFORMATION" || rawCat.toLowerCase().includes("general")) {
+        cat = "A. General Information";
+      } else if (rawCat === "DOCUMENTS_AND_INFORMATION" || rawCat.toLowerCase().includes("documents")) {
+        cat = "B. Documents and Information";
+      } else if (rawCat === "RESULT_AND_ACADEMICS" || rawCat.toLowerCase().includes("result") || rawCat.toLowerCase().includes("academic")) {
+        cat = "C. Result and Academics";
+      }
 
       categoriesMap[cat].push(doc);
     });
