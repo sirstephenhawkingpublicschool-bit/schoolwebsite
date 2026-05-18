@@ -13,9 +13,7 @@ interface HygraphDisclosure {
   id: string;
   title: string;
   driveLink?: string;
-  pdfFile?: {
-    url: string;
-  };
+  category?: string;
 }
 
 export default async function DisclosuresPage() {
@@ -36,6 +34,27 @@ export default async function DisclosuresPage() {
     console.warn("Hygraph Fetch Disclosures failed, falling back to mock data:", error);
   }
 
+  // Group live disclosures by category (exactly matching the A, B, C layout!)
+  const categoriesMap: { [key: string]: HygraphDisclosure[] } = {
+    "A. General Information": [],
+    "B. Documents and Information": [],
+    "C. Result and Academics": []
+  };
+
+  if (useLive) {
+    liveDisclosures.forEach((doc) => {
+      let cat = doc.category || "A. General Information";
+      
+      // Auto-correct spelling/shorthands
+      if (cat.toLowerCase().includes("general")) cat = "A. General Information";
+      else if (cat.toLowerCase().includes("documents")) cat = "B. Documents and Information";
+      else if (cat.toLowerCase().includes("result") || cat.toLowerCase().includes("academic")) cat = "C. Result and Academics";
+      else cat = "A. General Information";
+
+      categoriesMap[cat].push(doc);
+    });
+  }
+
   return (
     <main className={styles.page}>
       <section className={styles.pageHeader}>
@@ -47,33 +66,37 @@ export default async function DisclosuresPage() {
 
       <div className={styles.container}>
         {useLive ? (
-          <div className={styles.categoryBlock}>
-            <h2 className={styles.categoryTitle}>CBSE Mandated Documents</h2>
-            <div className={styles.grid}>
-              {liveDisclosures.map((doc) => {
-                const docUrl = doc.driveLink || doc.pdfFile?.url || "#";
-                const docLabel = doc.driveLink ? "Google Drive Link" : "PDF Document";
-                return (
-                  <a 
-                    href={docUrl} 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    key={doc.id} 
-                    className={styles.docCard}
-                  >
-                    <div className={styles.iconWrapper}>
-                      <FileText size={24} />
-                    </div>
-                    <div className={styles.docInfo}>
-                      <h3 className={styles.docName}>{doc.title}</h3>
-                      <span className={styles.docSize}>{docLabel} • Live from CMS</span>
-                    </div>
-                    <Download size={20} className={styles.downloadIcon} />
-                  </a>
-                );
-              })}
-            </div>
-          </div>
+          Object.entries(categoriesMap)
+            .filter(([_, docs]) => docs.length > 0)
+            .map(([catTitle, docs], idx) => (
+              <div key={idx} className={styles.categoryBlock}>
+                <h2 className={styles.categoryTitle}>{catTitle}</h2>
+                <div className={styles.grid}>
+                  {docs.map((doc) => {
+                    const docUrl = doc.driveLink || "#";
+                    const docLabel = "Google Drive Link";
+                    return (
+                      <a 
+                        href={docUrl} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        key={doc.id} 
+                        className={styles.docCard}
+                      >
+                        <div className={styles.iconWrapper}>
+                          <FileText size={24} />
+                        </div>
+                        <div className={styles.docInfo}>
+                          <h3 className={styles.docName}>{doc.title}</h3>
+                          <span className={styles.docSize}>{docLabel} • Live from CMS</span>
+                        </div>
+                        <Download size={20} className={styles.downloadIcon} />
+                      </a>
+                    );
+                  })}
+                </div>
+              </div>
+            ))
         ) : (
           disclosureCategories.map((category, index) => (
             <div key={index} className={styles.categoryBlock}>

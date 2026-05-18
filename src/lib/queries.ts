@@ -70,9 +70,7 @@ export const GET_DISCLOSURES = `
       id
       title
       driveLink
-      pdfFile {
-        url
-      }
+      category
     }
   }
 `;
