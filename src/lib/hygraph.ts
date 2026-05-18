@@ -39,7 +39,7 @@ export async function hygraphFetch<T>({
   const json = await response.json();
 
   if (json.errors) {
-    console.error("Hygraph GraphQL Error:", json.errors);
+    console.warn("Hygraph GraphQL Info:", json.errors);
     throw new Error(
       `GraphQL error: ${json.errors.map((e: any) => e.message).join(", ")}`
     );
