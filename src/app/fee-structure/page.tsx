@@ -2,13 +2,22 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import { Download } from 'lucide-react';
 import styles from './FeeStructurePage.module.css';
+import { hygraphFetch } from '@/lib/hygraph';
+import { GET_FEE_STRUCTURE } from '@/lib/queries';
 
 export const metadata: Metadata = {
   title: 'Fee Structure | Sir Stephen Hawking Public School',
   description: 'View the fee structure for Sir Stephen Hawking Public School.',
 };
 
-const feeData = [
+interface HygraphFeeItem {
+  id: string;
+  serialNo: number;
+  className: string;
+  monthlyFee: string;
+}
+
+const fallbackFeeData = [
   { no: '1.', class: 'NURSERY', fee: '1300/-', rowClass: styles.row1 },
   { no: '2.', class: 'L.K.G', fee: '1300/-', rowClass: styles.row2 },
   { no: '3.', class: 'U.K.G', fee: '1300/-', rowClass: styles.row3 },
@@ -22,7 +31,29 @@ const feeData = [
   { no: '11.', class: '8TH', fee: '1800/-', rowClass: styles.row11 },
 ];
 
-export default function FeeStructurePage() {
+export default async function FeeStructurePage() {
+  let feeData = fallbackFeeData;
+  let useLive = false;
+
+  try {
+    const data = await hygraphFetch<{ feeStructures: HygraphFeeItem[] }>({
+      query: GET_FEE_STRUCTURE,
+      revalidate: 0, // Bypass caching in dev so the user sees changes immediately!
+    });
+
+    if (data && data.feeStructures && data.feeStructures.length > 0) {
+      feeData = data.feeStructures.map((item, idx) => ({
+        no: `${item.serialNo || idx + 1}.`,
+        class: item.className,
+        fee: item.monthlyFee,
+        rowClass: styles[`row${(idx % 11) + 1}`] || '',
+      }));
+      useLive = true;
+    }
+  } catch (error) {
+    console.warn("Hygraph Fetch Fee Structure failed, falling back to mock data:", error);
+  }
+
   return (
     <main className={styles.container}>
       <div className={styles.documentContainer}>
@@ -70,3 +101,4 @@ export default function FeeStructurePage() {
     </main>
   );
 }
+
