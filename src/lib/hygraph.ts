@@ -16,6 +16,8 @@ export async function hygraphFetch<T>({
     throw new Error("HYGRAPH_ENDPOINT environment variable is not defined");
   }
 
+  console.log(`[Hygraph Query Logger] Fetching query (length: ${query ? query.length : 'undefined'}):`, query);
+
   const headers: HeadersInit = {
     "Content-Type": "application/json",
   };
