@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Download } from 'lucide-react';
 import styles from './FeeStructurePage.module.css';
 import { hygraphFetch } from '@/lib/hygraph';
-import { GET_FEE_STRUCTURE } from '@/lib/queries';
+import { GET_FEE_STRUCTURE, GET_DISCLOSURES } from '@/lib/queries';
 
 export const metadata: Metadata = {
   title: 'Fee Structure | Sir Stephen Hawking Public School',
@@ -33,22 +33,39 @@ const fallbackFeeData = [
 
 export default async function FeeStructurePage() {
   let feeData = fallbackFeeData;
-  let useLive = false;
+  let booklistUrl = "#";
 
   try {
-    const data = await hygraphFetch<{ feeStructures: HygraphFeeItem[] }>({
-      query: GET_FEE_STRUCTURE,
-      revalidate: 0, // Bypass caching in dev so the user sees changes immediately!
-    });
+    const [feeRes, disclosureRes] = await Promise.all([
+      hygraphFetch<{ feeStructures: HygraphFeeItem[] }>({
+        query: GET_FEE_STRUCTURE,
+        revalidate: 0,
+      }),
+      hygraphFetch<{ disclosures: Array<{ title: string; pdfFile: { url: string } }> }>({
+        query: GET_DISCLOSURES,
+        revalidate: 0,
+      }).catch((e) => {
+        console.warn("Hygraph Fetch Booklist Disclosure failed quietly:", e);
+        return { disclosures: [] };
+      })
+    ]);
 
-    if (data && data.feeStructures && data.feeStructures.length > 0) {
-      feeData = data.feeStructures.map((item, idx) => ({
+    if (feeRes && feeRes.feeStructures && feeRes.feeStructures.length > 0) {
+      feeData = feeRes.feeStructures.map((item, idx) => ({
         no: `${item.serialNo || idx + 1}.`,
         class: item.className,
         fee: item.monthlyFee,
         rowClass: styles[`row${(idx % 11) + 1}`] || '',
       }));
-      useLive = true;
+    }
+
+    if (disclosureRes && disclosureRes.disclosures) {
+      const booklistDoc = disclosureRes.disclosures.find(
+        (doc) => doc.title.toLowerCase().includes("booklist")
+      );
+      if (booklistDoc && booklistDoc.pdfFile) {
+        booklistUrl = booklistDoc.pdfFile.url;
+      }
     }
   } catch (error) {
     console.warn("Hygraph Fetch Fee Structure failed, falling back to mock data:", error);
@@ -93,7 +110,12 @@ export default async function FeeStructurePage() {
         <p className={styles.booklistText}>
           Download the complete booklist for all classes for the current academic session.
         </p>
-        <Link href="#" className={styles.booklistBtn}>
+        <Link 
+          href={booklistUrl} 
+          target={booklistUrl !== "#" ? "_blank" : undefined}
+          rel="noopener noreferrer" 
+          className={styles.booklistBtn}
+        >
           <Download size={20} style={{ marginRight: '8px' }} />
           Download Booklist (PDF)
         </Link>

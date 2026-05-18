@@ -1,6 +1,6 @@
 /**
  * School Fee Structure CMS Populator Script
- * Automatically populates all CBSE classes (Nursery to 8th) into your Hygraph CMS.
+ * Automatically populates all CBSE classes (Nursery to 8th) into your Hygraph CMS sequentially.
  */
 
 require("dotenv").config({ path: ".env.local" });
@@ -22,6 +22,8 @@ const feeEntries = [
   { serialNo: 11, className: "8TH", monthlyFee: "1800/-" },
 ];
 
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 async function runPopulator() {
   if (!HYGRAPH_ENDPOINT || !HYGRAPH_MANAGEMENT_TOKEN) {
     console.error("❌ Error: HYGRAPH_ENDPOINT or HYGRAPH_MANAGEMENT_TOKEN is missing in .env.local");
@@ -30,60 +32,58 @@ async function runPopulator() {
 
   console.log("🚀 Starting School Fee Structure CMS Populator...");
 
-  // 1. Build a single batch mutation to create all 11 fee entries!
-  let mutationFields = "";
-  feeEntries.forEach((entry, index) => {
-    mutationFields += `
-      create_${index}: createFeeStructure(data: {
-        serialNo: ${entry.serialNo},
-        className: "${entry.className}",
-        monthlyFee: "${entry.monthlyFee}"
-      }) {
-        id
-      }
-    `;
-  });
-
-  const createMutation = `
-    mutation PopulateFees {
-      ${mutationFields}
-    }
-  `;
-
   const headers = {
     "Content-Type": "application/json",
     "Authorization": `Bearer ${HYGRAPH_MANAGEMENT_TOKEN}`
   };
 
   try {
-    console.log("📥 Creating fee structure entries in Hygraph (Drafts)...");
-    const createRes = await fetch(HYGRAPH_ENDPOINT, {
-      method: "POST",
-      headers,
-      body: JSON.stringify({ query: createMutation }),
-    });
+    for (const entry of feeEntries) {
+      console.log(`📥 Creating entry: Class ${entry.className} (Fee: ${entry.monthlyFee})...`);
+      
+      const createMutation = `
+        mutation CreateFee {
+          createFeeStructure(data: {
+            serialNo: ${entry.serialNo},
+            className: "${entry.className}",
+            monthlyFee: "${entry.monthlyFee}"
+          }) {
+            id
+          }
+        }
+      `;
 
-    const createJson = await createRes.json();
+      const response = await fetch(HYGRAPH_ENDPOINT, {
+        method: "POST",
+        headers,
+        body: JSON.stringify({ query: createMutation }),
+      });
 
-    if (createJson.errors) {
-      const isPermissionErr = createJson.errors.some(e => e.message.includes("permission") || e.extensions?.code === "403");
-      if (isPermissionErr) {
-        console.error("\n❌ Error: Your Permanent Auth Token does not have 'Create' permission for the Content API.");
-        console.log("👉 HOW TO FIX:");
-        console.log("1. Go to Hygraph -> Project Settings -> API Access -> Permanent Auth Tokens (click your token).");
-        console.log("2. Scroll to the 'Content API' section of that token.");
-        console.log("3. Click '+ Add Permission'.");
-        console.log("4. Set 'Action' to include 'CREATE' and 'PUBLISH' (or check 'All Actions') and click Save.");
-        console.log("5. Re-run this script!");
-        process.exit(1);
+      const resJson = await response.json();
+
+      if (resJson.errors) {
+        const isPermissionErr = resJson.errors.some(e => e.message.includes("permission") || e.extensions?.code === "403");
+        if (isPermissionErr) {
+          console.error("\n❌ Error: Your Permanent Auth Token does not have 'Create' permission for the Content API.");
+          console.log("👉 HOW TO FIX:");
+          console.log("1. Go to Hygraph -> Project Settings -> API Access -> Permanent Auth Tokens (click your token).");
+          console.log("2. Scroll to the 'Content API' section of that token.");
+          console.log("3. Click '+ Add Permission'.");
+          console.log("4. Set 'Action' to include 'CREATE' and 'PUBLISH' (or check 'All Actions') and click Save.");
+          console.log("5. Re-run this script!");
+          process.exit(1);
+        }
+        console.warn(`⚠️ Warning: Failed to create class ${entry.className}:`, resJson.errors[0].message);
+      } else {
+        console.log(`✅ Created: Class ${entry.className}`);
       }
-      throw new Error(JSON.stringify(createJson.errors, null, 2));
+
+      // Add a small 200ms delay to stay well under the concurrency limit!
+      await sleep(250);
     }
 
-    console.log("✅ Successfully created all 11 fee structure entries!");
-
     // 2. Publish all created drafts instantly!
-    console.log("📣 Publishing entries to live site...");
+    console.log("\n📣 Publishing entries to live site...");
     const publishMutation = `
       mutation PublishAllFees {
         publishManyFeeStructures(to: [PUBLISHED]) {
