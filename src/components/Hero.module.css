@@ -1,0 +1,328 @@
+.hero {
+  background-color: var(--color-background);
+  background-image: linear-gradient(rgba(0, 21, 62, 0.85), rgba(0, 21, 62, 0.9)), url('/school_campus_bg.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  padding: 4rem 5%;
+  position: relative;
+  overflow: hidden;
+}
+
+.wavyLine1 {
+  position: absolute;
+  top: 30%;
+  left: 45%;
+  opacity: 0.5;
+}
+
+.wavyLine2 {
+  position: absolute;
+  bottom: 20%;
+  right: 15%;
+  opacity: 0.5;
+}
+
+.circle1 {
+  position: absolute;
+  top: 15%;
+  left: 10%;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 3px solid #ffffff;
+  opacity: 0.4;
+}
+
+.circle2 {
+  position: absolute;
+  bottom: 10%;
+  left: 20%;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background-color: var(--color-secondary-container);
+  opacity: 0.3;
+}
+
+.triangle1 {
+  position: absolute;
+  top: 10%;
+  right: 25%;
+  opacity: 0.4;
+  transform: rotate(15deg);
+}
+
+.triangle2 {
+  position: absolute;
+  bottom: 25%;
+  left: 35%;
+  opacity: 0.4;
+  transform: rotate(-20deg);
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  gap: 6rem;
+  z-index: 1;
+}
+
+.content {
+  flex: 1;
+  max-width: 650px;
+}
+
+.title {
+  font-family: var(--font-playfair);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.15;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.highlight {
+  color: var(--color-inverse-primary);
+}
+
+.description {
+  font-family: var(--font-inter);
+  font-size: clamp(1rem, 2vw, 1.15rem);
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.6;
+  margin-bottom: 2.5rem;
+}
+
+.actions {
+  display: flex;
+  margin-top: 1rem;
+}
+
+.primaryBtn {
+  background-color: var(--color-secondary-container);
+  color: #ffffff;
+  padding: 1.1rem 3rem;
+  border-radius: 3rem;
+  font-family: var(--font-inter);
+  font-weight: 600;
+  font-size: 1.1rem;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 25px rgba(254, 101, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.primaryBtn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(254, 101, 0, 0.4);
+}
+
+.secondaryBtn {
+  background-color: transparent;
+  color: #ffffff;
+  padding: 1.1rem 2rem;
+  border-radius: 3rem;
+  font-family: var(--font-inter);
+  font-weight: 600;
+  font-size: 1.1rem;
+  border: 2px solid #ffffff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-left: 1rem;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.secondaryBtn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-3px);
+}
+
+/* RIGHT SIDE */
+.visual {
+  flex: 1;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 600px;
+}
+
+.floatingElement {
+  position: absolute;
+  top: 5%;
+  right: 5%;
+  background-color: #ffffff;
+  color: var(--color-secondary-container);
+  padding: 1.25rem;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  z-index: 15;
+}
+
+.imageGrid {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.imageBoxLeft {
+  width: 260px;
+  height: 340px;
+  position: relative;
+  border-radius: 1rem;
+  overflow: hidden;
+  transform: translateY(40px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+}
+
+.imageBoxRight {
+  width: 260px;
+  height: 380px;
+  position: relative;
+  border-radius: 1rem;
+  overflow: hidden;
+  transform: translateY(-20px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+}
+
+.imageObj {
+  object-fit: cover;
+}
+
+.infoCard {
+  position: absolute;
+  bottom: 60px;
+  left: 5%;
+  background-color: var(--color-primary);
+  color: #ffffff;
+  padding: 1.25rem 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 15px 40px rgba(0, 21, 62, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  z-index: 10;
+}
+
+.infoRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-inter);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.checkIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  padding: 0.2rem;
+}
+
+@media (max-width: 1024px) {
+  .hero {
+    padding: 3rem 5%;
+  }
+  .container {
+    flex-direction: column;
+    text-align: center;
+    gap: 0;
+  }
+  .content {
+    display: contents;
+  }
+  .title {
+    order: 1;
+    max-width: 800px;
+    margin-bottom: 1rem;
+  }
+  .description {
+    order: 2;
+    max-width: 700px;
+    margin-bottom: 2rem;
+  }
+  .visual {
+    order: 3;
+    width: 100%;
+    min-height: auto;
+    padding-bottom: 2rem;
+  }
+  .actions {
+    order: 4;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+  .secondaryBtn {
+    margin-left: 0;
+  }
+  .imageBoxLeft {
+    width: 200px;
+    height: 280px;
+  }
+  .imageBoxRight {
+    width: 200px;
+    height: 320px;
+  }
+  .infoCard {
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .wavyLine1 { top: 5%; left: 5%; opacity: 0.15; }
+  .wavyLine2 { bottom: 5%; right: 5%; opacity: 0.15; }
+  .circle1 { top: 15%; right: 10%; left: auto; opacity: 0.15; }
+  .circle2 { bottom: 40%; left: 5%; opacity: 0.15; }
+  .triangle1 { top: 45%; right: 5%; opacity: 0.15; }
+  .triangle2 { bottom: 20%; left: 10%; opacity: 0.15; }
+  .floatingElement {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    gap: 2rem;
+  }
+  .imageGrid {
+    gap: 0.75rem;
+    justify-content: center;
+  }
+  .imageBoxLeft {
+    width: 150px;
+    height: 200px;
+    transform: translateY(20px);
+  }
+  .imageBoxRight {
+    width: 150px;
+    height: 240px;
+    transform: translateY(-10px);
+  }
+  .infoCard {
+    width: 90%;
+    max-width: 300px;
+    padding: 1rem;
+    bottom: -40px;
+  }
+  .infoRow {
+    font-size: 0.85rem;
+  }
+}

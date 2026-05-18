@@ -1,0 +1,263 @@
+.section {
+  padding: 3rem 5% 6rem;
+  background-color: var(--color-surface);
+  position: relative;
+  overflow: hidden;
+}
+
+.patternDots {
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  width: 200px;
+  height: 200px;
+  background-image: radial-gradient(var(--color-outline-variant) 2px, transparent 2px);
+  background-size: 20px 20px;
+  opacity: 0.4;
+  z-index: 0;
+}
+
+.blobCenter {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 800px;
+  background: var(--color-secondary-container);
+  opacity: 0.04;
+  filter: blur(100px);
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 4rem;
+  gap: 3rem;
+}
+
+.headerLeft {
+  flex: 1;
+}
+
+.headerRight {
+  flex: 1;
+  max-width: 550px;
+}
+
+.subtitle {
+  display: inline-block;
+  font-family: var(--font-inter);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--color-secondary-container);
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-family: var(--font-playfair);
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  font-weight: 800;
+  color: var(--color-primary);
+  line-height: 1.2;
+}
+
+.description {
+  font-family: var(--font-inter);
+  font-size: 1.1rem;
+  color: var(--color-on-surface-variant);
+  line-height: 1.6;
+  text-align: left;
+}
+
+/* Bento Grid */
+.bentoGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 240px;
+  gap: 1.5rem;
+}
+
+.bentoCard {
+  border-radius: 1.5rem;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 21, 62, 0.05);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.bentoCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 21, 62, 0.12);
+}
+
+.bgImage {
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.bentoCard:hover .bgImage {
+  transform: scale(1.05);
+}
+
+.overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(to top, rgba(0,21,62,0.9) 0%, rgba(0,21,62,0.2) 100%);
+  z-index: 1;
+}
+
+.cardContent {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 2rem;
+  z-index: 2;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.iconBox {
+  width: 45px;
+  height: 45px;
+  background-color: var(--color-secondary-container);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.cardContent h3 {
+  font-family: var(--font-playfair);
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+
+.cardContent p {
+  font-family: var(--font-inter);
+  font-size: 1rem;
+  opacity: 0.9;
+  line-height: 1.5;
+}
+
+/* Specific Card Sizes */
+.largeCard {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.tallCard {
+  grid-column: span 1;
+  grid-row: span 2;
+}
+
+.wideCard {
+  grid-column: span 2;
+  grid-row: span 1;
+}
+
+.smallCard {
+  grid-column: span 1;
+  grid-row: span 1;
+}
+
+/* Light & Dark content variants for small cards without images */
+.cardContentDark, .cardContentLight {
+  width: 100%;
+  height: 100%;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.cardContentDark {
+  background-color: var(--color-primary);
+  color: #ffffff;
+}
+
+.cardContentLight {
+  background-color: #ffffff;
+  color: var(--color-on-surface);
+}
+
+.iconBoxDark {
+  color: var(--color-secondary-container);
+  margin-bottom: 1rem;
+}
+
+.iconBoxLight {
+  color: var(--color-primary);
+  margin-bottom: 1rem;
+}
+
+.cardContentDark h3, .cardContentLight h3 {
+  font-family: var(--font-inter);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.cardContentDark p {
+  font-family: var(--font-inter);
+  font-size: 0.95rem;
+  opacity: 0.8;
+  line-height: 1.4;
+}
+
+.cardContentLight p {
+  font-family: var(--font-inter);
+  font-size: 0.95rem;
+  color: var(--color-on-surface-variant);
+  line-height: 1.4;
+}
+
+@media (max-width: 1024px) {
+  .bentoGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .tallCard, .wideCard {
+    grid-column: span 2;
+    grid-row: span 1;
+  }
+  .largeCard {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+  .headerRight {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .bentoGrid {
+    grid-template-columns: 1fr;
+    grid-auto-rows: auto;
+  }
+  .largeCard, .tallCard, .wideCard, .smallCard {
+    grid-column: span 1;
+    grid-row: span 1;
+    min-height: 280px;
+  }
+}

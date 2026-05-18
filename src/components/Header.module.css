@@ -1,0 +1,201 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 5%;
+  background-color: var(--color-surface-container-lowest);
+  box-shadow: 0 4px 20px rgba(0, 21, 62, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-decoration: none;
+}
+
+.logo {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.schoolName {
+  font-family: var(--font-playfair);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin: 0;
+}
+
+.hamburger {
+  display: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--color-primary);
+}
+
+.nav {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.navLink {
+  font-family: var(--font-inter);
+  font-weight: 600;
+  color: var(--color-on-surface);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+  position: relative;
+}
+
+.navLink:hover {
+  color: var(--color-primary);
+}
+
+.navLink::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -4px;
+  left: 0;
+  background-color: var(--color-secondary-container);
+  transition: width 0.3s ease;
+}
+
+.navLink:hover::after {
+  width: 100%;
+}
+
+.contactBtn {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-default);
+  font-family: var(--font-inter);
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.contactBtn:hover {
+  background-color: var(--color-primary-container);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 21, 62, 0.15);
+}
+
+@media (max-width: 1024px) {
+  .header {
+    padding: 0.5rem 5%;
+  }
+
+  .logo {
+    width: 40px;
+    height: 40px;
+  }
+
+  .logoContainer {
+    gap: 0.5rem;
+  }
+
+  .schoolName {
+    font-size: clamp(0.85rem, 3.8vw, 1.1rem);
+    white-space: nowrap;
+  }
+
+  .nav {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: #ffffff;
+    padding: 7rem 10% 3rem;
+    gap: 1.2rem;
+    align-items: flex-start;
+    justify-content: flex-start;
+    
+    opacity: 0;
+    transform: translateX(100%);
+    pointer-events: none;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 999;
+  }
+
+  .navOpen {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+  }
+
+  .navLink {
+    font-size: 1.05rem;
+    font-family: var(--font-inter);
+    font-weight: 600;
+    color: var(--color-on-surface);
+    width: 100%;
+    text-align: left;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--color-outline-variant);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .navLink::after {
+    display: none;
+  }
+
+  .navLink:hover {
+    color: var(--color-secondary-container);
+    padding-left: 0.5rem;
+  }
+
+  .navLink::before {
+    content: '→';
+    font-family: var(--font-inter);
+    color: var(--color-secondary-container);
+    opacity: 0.5;
+    transition: all 0.3s ease;
+  }
+  
+  .navLink:hover::before {
+    opacity: 1;
+    transform: translateX(3px);
+  }
+
+  .hamburger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: var(--color-primary);
+    color: #ffffff;
+    font-size: 1.3rem;
+    cursor: pointer;
+    position: relative;
+    z-index: 1000;
+  }
+
+  .hamburgerOpen {
+    position: fixed;
+    top: 0.8rem;
+    right: 5%;
+  }
+
+  .actions {
+    display: none;
+  }
+}

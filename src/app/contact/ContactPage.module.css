@@ -1,0 +1,262 @@
+.page {
+  background-color: var(--color-background);
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Page Fillers */
+.blobLeft {
+  position: absolute;
+  top: 30%;
+  left: -20%;
+  width: 600px;
+  height: 600px;
+  background: var(--color-primary-container);
+  opacity: 0.05;
+  filter: blur(80px);
+  border-radius: 50%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.blobRight {
+  position: absolute;
+  top: 60%;
+  right: -15%;
+  width: 700px;
+  height: 700px;
+  background: var(--color-secondary-container);
+  opacity: 0.04;
+  filter: blur(100px);
+  border-radius: 50%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.pageHeader {
+  background-color: var(--color-primary);
+  background-image: radial-gradient(rgba(255,255,255,0.05) 2px, transparent 2px);
+  background-size: 30px 30px;
+  color: #ffffff;
+  padding: 8rem 5% 10rem;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.pageTitle {
+  font-family: var(--font-playfair);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.pageSubtitle {
+  font-family: var(--font-inter);
+  font-size: 1.1rem;
+  color: var(--color-inverse-primary);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.container {
+  max-width: 1200px;
+  margin: -6rem auto 6rem;
+  padding: 0 5%;
+  position: relative;
+  z-index: 2;
+}
+
+/* Contact Info Cards Horizontal */
+.contactCards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 4rem;
+}
+
+.card {
+  background: #ffffff;
+  padding: 2.5rem 1.5rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0,21,62,0.08);
+  border: 1px solid var(--color-outline-variant);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  border-color: var(--color-secondary-container);
+}
+
+.iconWrapper {
+  background: var(--color-secondary-container);
+  color: #ffffff;
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+  box-shadow: 0 8px 20px rgba(254, 101, 0, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.card:hover .iconWrapper {
+  transform: scale(1.1);
+}
+
+.cardContent h3 {
+  font-family: var(--font-inter);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-on-surface);
+  margin-bottom: 0.5rem;
+}
+
+.cardContent p {
+  font-family: var(--font-inter);
+  font-size: 0.95rem;
+  color: var(--color-on-surface-variant);
+  line-height: 1.5;
+}
+
+/* Main content: Form + Map */
+.mainGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: #ffffff;
+  border-radius: 1.5rem;
+  box-shadow: 0 20px 50px rgba(0, 21, 62, 0.05);
+  border: 1px solid var(--color-outline-variant);
+  overflow: hidden;
+}
+
+/* Form Section */
+.formSection {
+  padding: 4rem;
+}
+
+.formTitle {
+  font-family: var(--font-playfair);
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 1rem;
+}
+
+.formDesc {
+  font-family: var(--font-inter);
+  color: var(--color-on-surface-variant);
+  margin-bottom: 2.5rem;
+  line-height: 1.6;
+}
+
+.inputGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+}
+
+.input, .textarea {
+  width: 100%;
+  padding: 1.2rem 1.5rem;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 0.8rem;
+  font-family: var(--font-inter);
+  font-size: 1rem;
+  color: var(--color-on-surface);
+  background-color: #fafafa;
+  outline: none;
+  transition: all 0.3s ease;
+  appearance: none;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 140px;
+}
+
+.input:focus, .textarea:focus {
+  border-color: var(--color-primary);
+  background-color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(0, 21, 62, 0.05);
+}
+
+.submitBtn {
+  width: 100%;
+  padding: 1.2rem;
+  background-color: var(--color-primary);
+  color: #ffffff;
+  border: none;
+  border-radius: 0.8rem;
+  font-family: var(--font-inter);
+  font-size: 1.1rem;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.8rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.submitBtn:hover {
+  background-color: var(--color-secondary-container);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(254, 101, 0, 0.2);
+}
+
+/* Map Section */
+.mapSection {
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+  position: relative;
+  background: var(--color-outline-variant);
+}
+
+.map {
+  width: 100%;
+  height: 100%;
+  border: none;
+  position: absolute;
+  top: 0; left: 0;
+}
+
+@media (max-width: 1024px) {
+  .contactCards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .mainGrid {
+    grid-template-columns: 1fr;
+  }
+  .mapSection {
+    min-height: 400px;
+  }
+}
+
+@media (max-width: 600px) {
+  .contactCards {
+    grid-template-columns: 1fr;
+  }
+  .formSection {
+    padding: 2.5rem 1.5rem;
+  }
+  .inputGrid {
+    grid-template-columns: 1fr;
+  }
+}

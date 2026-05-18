@@ -1,0 +1,227 @@
+.section {
+  padding: 5rem 5%;
+  background-color: var(--color-surface);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decorative Filler Elements */
+.patternDots {
+  position: absolute;
+  top: 10%;
+  left: 2%;
+  width: 150px;
+  height: 150px;
+  background-image: radial-gradient(var(--color-outline-variant) 2px, transparent 2px);
+  background-size: 20px 20px;
+  opacity: 0.4;
+  z-index: 0;
+}
+
+.blob1 {
+  position: absolute;
+  top: -10%;
+  right: -5%;
+  width: 350px;
+  height: 350px;
+  background: var(--color-primary-container);
+  opacity: 0.05;
+  filter: blur(50px);
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.blob2 {
+  position: absolute;
+  bottom: -15%;
+  left: 25%;
+  width: 400px;
+  height: 400px;
+  background: var(--color-secondary-container);
+  opacity: 0.05;
+  filter: blur(60px);
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.squareLine {
+  position: absolute;
+  bottom: 20%;
+  right: 10%;
+  width: 80px;
+  height: 80px;
+  border: 4px solid var(--color-secondary-container);
+  opacity: 0.15;
+  transform: rotate(25deg);
+  z-index: 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 4rem;
+  position: relative;
+  z-index: 1;
+}
+
+.visualColumn {
+  flex: 1;
+  position: relative;
+  min-height: 400px;
+}
+
+.imageWrapper {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.experienceBadge {
+  position: absolute;
+  bottom: 30px;
+  right: -20px;
+  background-color: #ffffff;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  z-index: 2;
+  animation: floatUp 3s ease-in-out infinite;
+}
+
+.badgeIcon {
+  background-color: var(--color-primary-container);
+  color: var(--color-on-primary-container);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.badgeText {
+  display: flex;
+  flex-direction: column;
+}
+
+.badgeText strong {
+  font-family: var(--font-inter);
+  color: var(--color-primary);
+  font-size: 1.1rem;
+}
+
+.badgeText span {
+  font-family: var(--font-inter);
+  color: var(--color-on-surface-variant);
+  font-size: 0.8rem;
+}
+
+.floatingIcon {
+  position: absolute;
+  top: 40px;
+  left: -20px;
+  background-color: var(--color-secondary-container);
+  color: #ffffff;
+  padding: 1rem;
+  border-radius: 50%;
+  box-shadow: 0 10px 25px rgba(254, 101, 0, 0.3);
+  z-index: 2;
+  animation: floatDown 3s ease-in-out infinite;
+}
+
+@keyframes floatUp {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes floatDown {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(10px); }
+}
+
+.image {
+  object-fit: cover;
+}
+
+.content {
+  flex: 1;
+}
+
+.subtitle {
+  display: inline-block;
+  font-family: var(--font-inter);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--color-secondary-container);
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-family: var(--font-playfair);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  color: var(--color-primary);
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+}
+
+.description {
+  font-family: var(--font-inter);
+  font-size: 1.05rem;
+  color: var(--color-on-surface-variant);
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.primaryBtn {
+  display: inline-block;
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  padding: 0.9rem 2.5rem;
+  border-radius: 3rem;
+  font-family: var(--font-inter);
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.primaryBtn:hover {
+  background-color: var(--color-primary-container);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 21, 62, 0.2);
+}
+
+@media (max-width: 900px) {
+  .section {
+    padding: 4rem 5%;
+  }
+  .container {
+    flex-direction: column-reverse;
+    gap: 2.5rem;
+    text-align: center;
+  }
+  .visualColumn {
+    width: 100%;
+    min-height: 300px;
+  }
+  .experienceBadge {
+    right: 10px;
+    bottom: -15px;
+  }
+  .floatingIcon {
+    left: 10px;
+    top: -15px;
+  }
+}
