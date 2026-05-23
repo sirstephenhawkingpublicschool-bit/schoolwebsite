@@ -106,3 +106,40 @@ export const GET_GALLERY_ALBUM_BY_SLUG = `
     }
   }
 `;
+
+// 6. QUERY FOR HOME PAGE CONTENT
+export const GET_HOMEPAGE = `
+  query GetHomePage {
+    homePages(first: 1) {
+      id
+      heroTitle
+      heroDescription
+      aboutTitle
+      aboutText
+      yearsOfExcellence
+      ctaTitle
+      ctaDescription
+      galleryTitle
+      gallerySubtitle
+      galleryImages {
+        url
+      }
+      heroImageLeft {
+        url
+        width
+        height
+      }
+      heroImageRight {
+        url
+        width
+        height
+      }
+      aboutImage {
+        url
+        width
+        height
+      }
+    }
+  }
+`;
+

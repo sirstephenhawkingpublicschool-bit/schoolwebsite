@@ -4,7 +4,19 @@ import { BookOpen, Award } from 'lucide-react';
 import styles from './AboutSection.module.css';
 import { schoolDetails } from '../data/content';
 
-export default function AboutSection() {
+interface AboutSectionProps {
+  title?: string;
+  description?: string;
+  yearsOfExcellence?: number;
+  image?: string;
+}
+
+export default function AboutSection({ title, description, yearsOfExcellence, image }: AboutSectionProps) {
+  const displayTitle = title || "A Journey of Excellence & Values";
+  const displayDescription = description || schoolDetails.about;
+  const displayYears = yearsOfExcellence || 15;
+  const displayImage = image || "/hero-indian-students.png";
+
   return (
     <section className={styles.section}>
       {/* Decorative filler elements */}
@@ -17,7 +29,7 @@ export default function AboutSection() {
         <div className={styles.visualColumn}>
           <div className={styles.imageWrapper}>
             <Image 
-              src="/hero-indian-students.png" 
+              src={displayImage} 
               alt="Students at Sir Stephen Hawking Public School" 
               fill 
               className={styles.image} 
@@ -29,7 +41,7 @@ export default function AboutSection() {
               <Award size={20} />
             </div>
             <div className={styles.badgeText}>
-              <strong>15+ Years</strong>
+              <strong>{displayYears}+ Years</strong>
               <span>of Excellence</span>
             </div>
           </div>
@@ -41,9 +53,9 @@ export default function AboutSection() {
         
         <div className={styles.content}>
           <span className={styles.subtitle}>About Us</span>
-          <h2 className={styles.title}>A Journey of Excellence & Values</h2>
+          <h2 className={styles.title}>{displayTitle}</h2>
           <p className={styles.description}>
-            {schoolDetails.about}
+            {displayDescription}
           </p>
           <Link href="/about" className={styles.primaryBtn}>
             Discover More
@@ -53,3 +65,4 @@ export default function AboutSection() {
     </section>
   );
 }
+

@@ -1,6 +1,7 @@
-import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 import styles from './ContactPage.module.css';
 import { schoolDetails } from '@/data/content';
+import ContactForm from './ContactForm';
 
 export const metadata = {
   title: `Contact Us | ${schoolDetails.name}`,
@@ -68,50 +69,7 @@ export default function ContactPage() {
         {/* Main Grid: Form + Map */}
         <div className={styles.mainGrid}>
           
-          <div className={styles.formSection}>
-            <h2 className={styles.formTitle}>Send a Message</h2>
-            <p className={styles.formDesc}>
-              Have a question about admissions or our curriculum? Fill out the form below and our team will get back to you shortly.
-            </p>
-            
-            <form>
-              <div className={styles.inputGrid}>
-                <div className={styles.formGroup}>
-                  <input type="text" className={styles.input} placeholder="First Name" required />
-                </div>
-                <div className={styles.formGroup}>
-                  <input type="text" className={styles.input} placeholder="Last Name" required />
-                </div>
-              </div>
-
-              <div className={styles.inputGrid}>
-                <div className={styles.formGroup}>
-                  <input type="email" className={styles.input} placeholder="Email Address" required />
-                </div>
-                <div className={styles.formGroup}>
-                  <input type="tel" className={styles.input} placeholder="Phone Number" required />
-                </div>
-              </div>
-
-              <div className={styles.formGroup}>
-                <select className={styles.input} required defaultValue="">
-                  <option value="" disabled>Select a subject...</option>
-                  <option value="admission">Admissions Inquiry</option>
-                  <option value="general">General Information</option>
-                  <option value="feedback">Feedback / Suggestion</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-
-              <div className={styles.formGroup}>
-                <textarea className={styles.textarea} placeholder="How can we help you today?" required></textarea>
-              </div>
-
-              <button type="submit" className={styles.submitBtn}>
-                Send Message <Send size={20} />
-              </button>
-            </form>
-          </div>
+          <ContactForm />
 
           <div className={styles.mapSection}>
             <iframe 

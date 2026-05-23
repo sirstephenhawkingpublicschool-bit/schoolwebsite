@@ -4,7 +4,32 @@ import { Check, GraduationCap } from 'lucide-react';
 import styles from './Hero.module.css';
 import { schoolDetails } from '../data/content';
 
-export default function Hero() {
+interface HeroProps {
+  title?: string;
+  description?: string;
+  imageLeft?: string;
+  imageRight?: string;
+}
+
+export default function Hero({ title, description, imageLeft, imageRight }: HeroProps) {
+  const defaultTitle = "Empowering Young Minds For A Brighter Tomorrow";
+  const displayTitle = title || defaultTitle;
+
+  const renderTitle = (text: string) => {
+    const highlightWord = "Young Minds";
+    if (text.includes(highlightWord)) {
+      const parts = text.split(highlightWord);
+      return (
+        <>
+          {parts[0]}
+          <span className={styles.highlight}>{highlightWord}</span>
+          {parts[1]}
+        </>
+      );
+    }
+    return text;
+  };
+
   return (
     <section className={styles.hero}>
       {/* Decorative wavy lines */}
@@ -36,11 +61,11 @@ export default function Hero() {
       <div className={styles.container}>
         <div className={styles.content}>
           <h1 className={styles.title}>
-            Empowering <span className={styles.highlight}>Young Minds</span> For A Brighter Tomorrow
+            {renderTitle(displayTitle)}
           </h1>
           
           <p className={styles.description}>
-            Welcome to Sir Stephen Hawking Public School, where we foster a culture of academic excellence and strong moral values. We are committed to providing a safe, caring, and inspiring learning environment for students from Classes 1 to 8.
+            {description || "Welcome to Sir Stephen Hawking Public School, where we foster a culture of academic excellence and strong moral values. We are committed to providing a safe, caring, and inspiring learning environment for students from Classes 1 to 8."}
           </p>
           
           <div className={styles.actions}>
@@ -57,10 +82,10 @@ export default function Hero() {
           
           <div className={styles.imageGrid}>
             <div className={styles.imageBoxLeft}>
-              <Image src="/student_boy.png" alt="Student learning" fill className={styles.imageObj} />
+              <Image src={imageLeft || "/student_boy.png"} alt="Student learning" fill className={styles.imageObj} />
             </div>
             <div className={styles.imageBoxRight}>
-              <Image src="/student_girl.png" alt="Student reading" fill className={styles.imageObj} />
+              <Image src={imageRight || "/student_girl.png"} alt="Student reading" fill className={styles.imageObj} />
             </div>
           </div>
           
@@ -79,3 +104,4 @@ export default function Hero() {
     </section>
   );
 }
+
