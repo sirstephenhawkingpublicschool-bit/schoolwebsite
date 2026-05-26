@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { ArrowLeft, Calendar, ImageIcon, ZoomIn } from 'lucide-react';
+import { ArrowLeft, Calendar, ImageIcon } from 'lucide-react';
+import GalleryLightbox from '@/components/GalleryLightbox';
 import styles from './GalleryAlbum.module.css';
 import { galleryCategories } from '@/data/gallery';
 
@@ -41,19 +42,7 @@ export default async function GalleryAlbumPage({ params }: Props) {
       </section>
 
       <div className={styles.container}>
-        <div className={styles.grid}>
-          {category.photos.map((photoUrl, index) => (
-            <div key={index} className={styles.photoWrapper}>
-              <Image 
-                src={photoUrl} 
-                alt={`${category.title} photo ${index + 1}`} 
-                fill 
-                className={styles.photo}
-              />
-              <ZoomIn size={48} className={styles.zoomIcon} />
-            </div>
-          ))}
-        </div>
+        <GalleryLightbox photos={category.photos} title={category.title} />
       </div>
     </main>
   );
