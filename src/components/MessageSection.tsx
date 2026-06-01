@@ -3,10 +3,56 @@ import Image from 'next/image';
 import { Quote } from 'lucide-react';
 import styles from './MessageSection.module.css';
 import { schoolDetails } from '../data/content';
+import { hygraphFetch } from '@/lib/hygraph';
+import { GET_SCHOOL_MESSAGES } from '@/lib/queries';
 
-export default function MessageSection() {
-  const { principal, director } = schoolDetails.messages;
-  
+interface HygraphMessage {
+  id: string;
+  authorName: string;
+  designation: string;
+  messageText: string;
+  authorImage?: { url: string };
+}
+
+export default async function MessageSection() {
+  const mockMessages = schoolDetails.messages;
+  let principal = {
+    name: mockMessages.principal.name,
+    title: mockMessages.principal.title,
+    message: mockMessages.principal.message,
+    imageUrl: '/principal-image.png'
+  };
+  let director = {
+    name: mockMessages.director.name,
+    title: mockMessages.director.title,
+    message: mockMessages.director.message,
+    imageUrl: '/director-image.jpg'
+  };
+
+  try {
+    const data = await hygraphFetch<{ messages: HygraphMessage[] }>({
+      query: GET_SCHOOL_MESSAGES,
+      revalidate: 3600,
+    });
+    
+    if (data && data.messages && data.messages.length >= 2) {
+      principal = {
+        name: data.messages[0].authorName,
+        title: data.messages[0].designation,
+        message: data.messages[0].messageText,
+        imageUrl: data.messages[0].authorImage?.url || '/placeholder-avatar.png'
+      };
+      director = {
+        name: data.messages[1].authorName,
+        title: data.messages[1].designation,
+        message: data.messages[1].messageText,
+        imageUrl: data.messages[1].authorImage?.url || '/placeholder-avatar.png'
+      };
+    }
+  } catch (error) {
+    console.warn("Hygraph Fetch Messages failed, falling back to mock data:", error);
+  }
+
   // Helper to truncate message text
   const truncate = (text: string, length: number) => {
     if (text.length <= length) return text;
@@ -38,7 +84,7 @@ export default function MessageSection() {
               </p>
               <div className={styles.authorProfile}>
                 <div className={styles.authorImage}>
-                  <Image src="/principal-image.png" alt={principal.name} fill className={styles.image} />
+                  <Image src={principal.imageUrl} alt={principal.name} fill sizes="(max-width: 768px) 100vw, 33vw" priority={true} className={styles.image} />
                 </div>
                 <div className={styles.authorInfo}>
                   <h3 className={styles.authorName}>{principal.name}</h3>
@@ -62,7 +108,7 @@ export default function MessageSection() {
               </p>
               <div className={styles.authorProfile}>
                 <div className={styles.authorImage}>
-                  <Image src="/director-image.jpg" alt={director.name} fill className={styles.image} />
+                  <Image src={director.imageUrl} alt={director.name} fill sizes="(max-width: 768px) 100vw, 33vw" className={styles.image} />
                 </div>
                 <div className={styles.authorInfo}>
                   <h3 className={styles.authorName}>{director.name}</h3>

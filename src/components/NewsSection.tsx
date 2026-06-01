@@ -1,10 +1,45 @@
 import Link from 'next/link';
 import { Calendar, ArrowRight } from 'lucide-react';
 import styles from './NewsSection.module.css';
-import { newsItems } from '@/data/news';
+import { newsItems as mockNewsItems } from '@/data/news';
+import { hygraphFetch } from '@/lib/hygraph';
+import { GET_ALL_NEWS } from '@/lib/queries';
 
-export default function NewsSection() {
-  const latestNews = newsItems.slice(0, 3);
+export default async function NewsSection() {
+  let latestNews: any[] = [];
+  let useLive = false;
+
+  try {
+    const data = await hygraphFetch<{ newsItems: any[] }>({
+      query: GET_ALL_NEWS,
+      revalidate: 3600,
+    });
+    
+    if (data && data.newsItems && data.newsItems.length > 0) {
+      latestNews = data.newsItems.slice(0, 3).map((item: any) => {
+        const d = new Date(item.date);
+        const formattedDate = !isNaN(d.getTime()) 
+          ? d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+          : item.date;
+          
+        return {
+          id: item.id,
+          date: formattedDate,
+          category: item.category || 'General',
+          title: item.title,
+          description: item.description || (item.content ? item.content.substring(0, 100) + '...' : ''),
+        };
+      });
+      useLive = true;
+    }
+  } catch (error) {
+    console.warn("Hygraph Fetch News failed, falling back to mock data:", error);
+  }
+
+  if (!useLive) {
+    latestNews = mockNewsItems.slice(0, 3);
+  }
+
   return (
     <section className={styles.section}>
       {/* Decorative fillers */}

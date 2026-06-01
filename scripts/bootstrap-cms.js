@@ -24,7 +24,7 @@ console.log(`Endpoint: ${endpoint}`);
 const client = new Client({
   authToken,
   endpoint,
-  name: "bootstrap-school-schema",
+  name: `bootstrap-school-schema-${Date.now()}`,
 });
 
 // ==========================================
@@ -96,6 +96,22 @@ client.createSimpleField({
   displayName: "Content",
   type: SimpleFieldType.String,
   isRequired: true,
+});
+
+client.createSimpleField({
+  parentApiId: "NewsItem",
+  apiId: "description",
+  displayName: "Description",
+  type: SimpleFieldType.String,
+  isRequired: false,
+});
+
+client.createSimpleField({
+  parentApiId: "NewsItem",
+  apiId: "category",
+  displayName: "Category",
+  type: SimpleFieldType.String,
+  isRequired: false,
 });
 
 client.createSimpleField({
@@ -186,17 +202,20 @@ client.createSimpleField({
   isRequired: true,
 });
 
-client.createRelationalField({
+client.createSimpleField({
   parentApiId: "Disclosure",
-  apiId: "pdfFile",
-  displayName: "PDF File",
-  type: RelationalFieldType.Asset,
+  apiId: "driveLink",
+  displayName: "Google Drive Link",
+  type: SimpleFieldType.String,
   isRequired: true,
-  reverseField: {
-    apiId: "disclosure",
-    modelApiId: "Disclosure",
-    displayName: "Disclosure",
-  },
+});
+
+client.createSimpleField({
+  parentApiId: "Disclosure",
+  apiId: "category",
+  displayName: "Category",
+  type: SimpleFieldType.String,
+  isRequired: true,
 });
 
 // ==========================================
@@ -259,6 +278,142 @@ client.createRelationalField({
     apiId: "galleryAlbumImages",
     modelApiId: "GalleryAlbum",
     displayName: "Gallery Album Images",
+  },
+});
+
+// ==========================================
+// 6. CREATE MODEL: HomePage
+// ==========================================
+console.log("📝 Defining model: HomePage...");
+client.createModel({
+  apiId: "HomePage",
+  apiIdPlural: "HomePages",
+  displayName: "Home Page",
+  description: "Content for the school homepage",
+});
+
+client.createSimpleField({
+  parentApiId: "HomePage",
+  apiId: "heroTitle",
+  displayName: "Hero Title",
+  type: SimpleFieldType.String,
+  isRequired: true,
+});
+
+client.createSimpleField({
+  parentApiId: "HomePage",
+  apiId: "heroDescription",
+  displayName: "Hero Description",
+  type: SimpleFieldType.String,
+  isRequired: true,
+});
+
+client.createSimpleField({
+  parentApiId: "HomePage",
+  apiId: "aboutTitle",
+  displayName: "About Title",
+  type: SimpleFieldType.String,
+  isRequired: true,
+});
+
+client.createSimpleField({
+  parentApiId: "HomePage",
+  apiId: "aboutText",
+  displayName: "About Text",
+  type: SimpleFieldType.String,
+  isRequired: true,
+});
+
+client.createSimpleField({
+  parentApiId: "HomePage",
+  apiId: "yearsOfExcellence",
+  displayName: "Years of Excellence",
+  type: SimpleFieldType.Int,
+  isRequired: true,
+});
+
+client.createSimpleField({
+  parentApiId: "HomePage",
+  apiId: "ctaTitle",
+  displayName: "CTA Title",
+  type: SimpleFieldType.String,
+  isRequired: true,
+});
+
+client.createSimpleField({
+  parentApiId: "HomePage",
+  apiId: "ctaDescription",
+  displayName: "CTA Description",
+  type: SimpleFieldType.String,
+  isRequired: true,
+});
+
+client.createSimpleField({
+  parentApiId: "HomePage",
+  apiId: "galleryTitle",
+  displayName: "Gallery Title",
+  type: SimpleFieldType.String,
+  isRequired: false,
+});
+
+client.createSimpleField({
+  parentApiId: "HomePage",
+  apiId: "gallerySubtitle",
+  displayName: "Gallery Subtitle",
+  type: SimpleFieldType.String,
+  isRequired: false,
+});
+
+client.createRelationalField({
+  parentApiId: "HomePage",
+  apiId: "galleryImages",
+  displayName: "Gallery Images",
+  type: RelationalFieldType.Asset,
+  isList: true,
+  isRequired: false,
+  reverseField: {
+    apiId: "homePageGallery",
+    modelApiId: "HomePage",
+    displayName: "Home Page Gallery",
+  },
+});
+
+client.createRelationalField({
+  parentApiId: "HomePage",
+  apiId: "heroImageLeft",
+  displayName: "Hero Image Left",
+  type: RelationalFieldType.Asset,
+  isRequired: false,
+  reverseField: {
+    apiId: "homePageHeroLeft",
+    modelApiId: "HomePage",
+    displayName: "Home Page Hero Left",
+  },
+});
+
+client.createRelationalField({
+  parentApiId: "HomePage",
+  apiId: "heroImageRight",
+  displayName: "Hero Image Right",
+  type: RelationalFieldType.Asset,
+  isRequired: false,
+  reverseField: {
+    apiId: "homePageHeroRight",
+    modelApiId: "HomePage",
+    displayName: "Home Page Hero Right",
+  },
+});
+
+client.createRelationalField({
+  parentApiId: "HomePage",
+  apiId: "aboutImage",
+  displayName: "About Image",
+  type: RelationalFieldType.Asset,
+  isRequired: false,
+  reverseField: {
+    apiId: "homePageAboutImage",
+    modelApiId: "HomePage",
+    displayName: "Home Page About Image",
   },
 });
 

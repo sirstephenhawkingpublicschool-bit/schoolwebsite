@@ -20,6 +20,8 @@ export const GET_ALL_NEWS = `
     newsItems(orderBy: date_DESC) {
       id
       title
+      category
+      description
       slug
       content
       date
@@ -85,6 +87,9 @@ export const GET_GALLERY_ALBUMS = `
       date
       coverImage {
         url
+      }
+      images {
+        id
       }
     }
   }

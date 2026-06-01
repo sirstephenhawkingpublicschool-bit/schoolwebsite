@@ -1,48 +1,84 @@
 import { NextResponse } from "next/server";
+import { google } from "googleapis";
 
 export async function POST(request: Request) {
   try {
     const data = await request.json();
-    const webhookUrl = process.env.GOOGLE_SHEET_WEBHOOK_URL;
+    const sheetId = process.env.GOOGLE_SHEET_ID;
+    const clientEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
+    const privateKey = process.env.GOOGLE_PRIVATE_KEY;
 
-    if (!webhookUrl) {
-      console.warn("⚠️ Warning: GOOGLE_SHEET_WEBHOOK_URL is not defined in environment variables.");
+    if (!sheetId || !clientEmail || !privateKey) {
+      console.warn("⚠️ Warning: Google Sheets credentials are not fully configured in environment variables.");
       return NextResponse.json(
         {
           status: "error",
-          message: "Database integration is not fully configured. Please configure the GOOGLE_SHEET_WEBHOOK_URL environment variable.",
+          message: "Database integration is not fully configured. Please check your environment variables.",
         },
         { status: 500 }
       );
     }
 
-    // Forward the POST request to Google Apps Script Web App
-    const response = await fetch(webhookUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    // Initialize the Google Auth Client
+    const auth = new google.auth.GoogleAuth({
+      credentials: {
+        client_email: clientEmail,
+        // Ensure private key newlines are parsed correctly
+        private_key: privateKey.replace(/\\n/g, '\n'),
       },
-      body: JSON.stringify(data),
+      scopes: ["https://www.googleapis.com/auth/spreadsheets"],
     });
 
-    const resText = await response.text();
-    let resJson;
+    const sheets = google.sheets({ version: "v4", auth });
 
-    try {
-      resJson = JSON.parse(resText);
-    } catch (e) {
-      // Sometimes Apps Script returns plain text or redirects
-      console.log("Apps Script response text:", resText);
-      resJson = { status: "success" }; // If it didn't throw an error, we treat it as success
+    // Format the date/time
+    const timestamp = new Date().toISOString();
+
+    let sheetName = "";
+    let rowData: any[] = [];
+
+    // Determine target sheet and row structure based on form type
+    if (data.formType === "admission") {
+      sheetName = "Admissions";
+      rowData = [
+        timestamp,
+        data.studentName || "",
+        data.dob || "",
+        data.class || "",
+        data.previousSchool || "",
+        data.parentName || "",
+        data.phone || "",
+        data.email || "",
+        data.message || "",
+      ];
+    } else if (data.formType === "contact") {
+      sheetName = "Contact";
+      rowData = [
+        timestamp,
+        data.firstName || "",
+        data.lastName || "",
+        data.email || "",
+        data.phone || "",
+        data.subject || "",
+        data.message || "",
+      ];
+    } else {
+      throw new Error("Unknown form type provided.");
     }
 
-    if (resJson.status === "error") {
-      throw new Error(resJson.message || "Failed saving to Google Sheets.");
-    }
+    // Append the data to the Google Sheet
+    await sheets.spreadsheets.values.append({
+      spreadsheetId: sheetId,
+      range: `${sheetName}!A1`, // Start at A1, API will find the next empty row
+      valueInputOption: "USER_ENTERED",
+      requestBody: {
+        values: [rowData],
+      },
+    });
 
     return NextResponse.json({ status: "success" });
   } catch (error: any) {
-    console.error("Form submit proxy error:", error);
+    console.error("Google Sheets API error:", error);
     return NextResponse.json(
       {
         status: "error",
