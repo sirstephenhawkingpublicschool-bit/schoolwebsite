@@ -8,10 +8,10 @@ export default function Topbar() {
     <div className={styles.topbar}>
       <div className={styles.info}>
         <div className={styles.item}>
-          <Phone size={16} /> +91 98765 43210
+          <Phone size={16} /> +91 97200 77248
         </div>
         <div className={styles.item}>
-          <Mail size={16} /> info@sshp.edu.in
+          <Mail size={16} /> info@sirstephenhawking.edu.in
         </div>
       </div>
       <div className={styles.actions}>
