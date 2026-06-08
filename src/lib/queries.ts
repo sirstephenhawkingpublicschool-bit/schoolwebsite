@@ -5,7 +5,7 @@
 // 1. QUERY FOR FEE STRUCTURE
 export const GET_FEE_STRUCTURE = `
   query GetFeeStructure {
-    feeStructures(orderBy: serialNo_ASC) {
+    feeStructures(first: 100, orderBy: serialNo_ASC) {
       id
       serialNo
       className

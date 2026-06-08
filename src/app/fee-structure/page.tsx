@@ -33,7 +33,7 @@ const fallbackFeeData = [
 
 export default async function FeeStructurePage() {
   let feeData = fallbackFeeData;
-  let booklistUrl = "#";
+  let booklistUrl = "/Book List.pdf";
 
   try {
     const [feeRes, disclosureRes] = await Promise.all([
@@ -63,8 +63,8 @@ export default async function FeeStructurePage() {
       const booklistDoc = disclosureRes.disclosures.find(
         (doc) => doc.title.toLowerCase().includes("booklist")
       );
-      if (booklistDoc) {
-        booklistUrl = booklistDoc.driveLink || booklistDoc.pdfFile?.url || "#";
+      if (booklistDoc && (booklistDoc.driveLink || booklistDoc.pdfFile?.url)) {
+        booklistUrl = booklistDoc.driveLink || booklistDoc.pdfFile?.url || booklistUrl;
       }
     }
   } catch (error) {
@@ -110,15 +110,16 @@ export default async function FeeStructurePage() {
         <p className={styles.booklistText}>
           Download the complete booklist for all classes for the current academic session.
         </p>
-        <Link 
+        <a 
           href={booklistUrl} 
-          target={booklistUrl !== "#" ? "_blank" : undefined}
+          target="_blank"
           rel="noopener noreferrer" 
+          download
           className={styles.booklistBtn}
         >
           <Download size={20} style={{ marginRight: '8px' }} />
           Download Booklist (PDF)
-        </Link>
+        </a>
       </div>
     </main>
   );
