@@ -29,6 +29,7 @@ export default function Header() {
         <Link href="/" className={styles.navLink} onClick={() => setIsMenuOpen(false)}>Home</Link>
         <Link href="/about" className={styles.navLink} onClick={() => setIsMenuOpen(false)}>About Us</Link>
         <Link href="/gallery" className={styles.navLink} onClick={() => setIsMenuOpen(false)}>Gallery</Link>
+        <Link href="/video-gallery" className={styles.navLink} onClick={() => setIsMenuOpen(false)}>Video Gallery</Link>
         <Link href="/news" className={styles.navLink} onClick={() => setIsMenuOpen(false)}>News</Link>
         <Link href="/message" className={styles.navLink} onClick={() => setIsMenuOpen(false)}>Messages</Link>
         <Link href="/tc-verify" className={styles.navLink} onClick={() => setIsMenuOpen(false)}>TC Verify</Link>

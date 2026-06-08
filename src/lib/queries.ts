@@ -148,3 +148,15 @@ export const GET_HOMEPAGE = `
   }
 `;
 
+// 7. QUERY FOR VIDEO GALLERY
+export const GET_VIDEO_GALLERIES = `
+  query GetVideoGalleries {
+    videoGalleries(orderBy: date_DESC) {
+      id
+      title
+      videoUrl
+      date
+    }
+  }
+`;
+
