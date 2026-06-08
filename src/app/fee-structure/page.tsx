@@ -33,7 +33,7 @@ const fallbackFeeData = [
 
 export default async function FeeStructurePage() {
   let feeData = fallbackFeeData;
-  let booklistUrl = "/Book List.pdf";
+  let booklistUrl = "/Book-List.pdf";
 
   try {
     const [feeRes, disclosureRes] = await Promise.all([
